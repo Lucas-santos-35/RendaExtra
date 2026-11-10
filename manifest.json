@@ -1,0 +1,20 @@
+{
+"name": "Meta R$ 1800 - Ganhos nos Apps",
+"short_name": "Meta 1800",
+"start_url": "index.html",
+"display": "standalone",
+"background_color": "#f8fafc",
+"theme_color": "#4f46e5",
+"icons": [
+{
+"src": "https://placehold.co/192x192/4f46e5/ffffff?text=App",
+"sizes": "192x192",
+"type": "image/png"
+},
+{
+"src": "https://placehold.co/512x512/4f46e5/ffffff?text=App",
+"sizes": "512x512",
+"type": "image/png"
+}
+]
+}
