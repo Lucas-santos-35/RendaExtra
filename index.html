@@ -1,1 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão 12x36 & Meta R$ 1.800</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Meta 1800 12x36">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col antialiased">
 
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl shadow-inner border border-indigo-500">
+                    <i class="fa-solid fa-mobile-screen-button text-xl text-indigo-100"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight">Meta R$ 1.800 | Ganhos nos Apps</h1>
+                    <p class="text-xs text-indigo-200">Controle focado em corridas e entregas nos aplicativos (12x36)</p>
+                </div>
+            </div>
+            <button onclick="app.abrirModalInstrucoes()" class="bg-indigo-800 hover:bg-indigo-900 text-indigo-100 text-xs font-medium px-3 py-2 rounded-lg border border-indigo-600 transition flex items-center gap-1">
+                <i class="fa-brands fa-apple"></i> Instalar no iPhone
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-5 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
+        
+        <!-- Meta Progress Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye text-indigo-600"></i> Progresso da Meta Mensal nos Apps
+                </h2>
+                <span id="label-mes-atual" class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-full">Mês Atual</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                    <span class="block text-[10px] font-medium text-slate-500 uppercase tracking-wider">Meta Mensal</span>
+                    <span class="text-lg font-bold text-slate-900">R$ 1.800</span>
+                </div>
+                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-center">
+                    <span class="block text-[10px] font-medium text-emerald-600 uppercase tracking-wider">Total nos Apps</span>
+                    <span id="stat-total-ganho" class="text-lg font-bold text-emerald-600">R$ 0,00</span>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 text-center">
+                    <span class="block text-[10px] font-medium text-amber-600 uppercase tracking-wider">Falta para Meta</span>
+                    <span id="stat-falta-meta" class="text-lg font-bold text-amber-600">R$ 1.800</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden border border-slate-200">
+                <div id="barra-progresso" class="bg-gradient-to-r from-indigo-600 to-emerald-500 h-3.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-2 text-xs text-slate-500">
+                <span id="label-percentual">0% atingido</span>
+                <span id="stat-dias-trabalhados">0 dias com ganhos registrados</span>
+            </div>
+        </div>
+
+        <!-- Shift & Earnings Input Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            
+            <!-- Quick Status (Hoje é Plantão) -->
+            <div class="bg-gradient-to-br from-indigo-900 to-indigo-800 rounded-2xl shadow-md p-5 text-white flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-medium text-indigo-200 uppercase tracking-wider">Status de Hoje</span>
+                        <span class="bg-indigo-700/80 text-indigo-100 text-[11px] px-2 py-0.5 rounded-full border border-indigo-500">Plantão 12x36</span>
+                    </div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-lg shadow-inner">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base">Hoje você está de plantão!</h3>
+                            <p class="text-xs text-indigo-200">Anotou quanto fez rodando no aplicativo?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-indigo-700 flex justify-between items-center text-xs">
+                    <span>Média diária necessária:</span>
+                    <span id="info-media-diaria" class="font-semibold text-indigo-100">R$ 60,00 / dia</span>
+                </div>
+            </div>
+
+            <!-- Add Earnings Form -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-indigo-600"></i> Registrar Faturamento do App
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Data do Ganho</label>
+                            <input type="date" id="input-data" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Valor Feito no Aplicativo (R$)</label>
+                            <input type="number" step="0.01" id="input-valor" placeholder="Ex: 40.00" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Qual Aplicativo / Observação</label>
+                            <input type="text" id="input-obs" placeholder="Ex: Uber, 99 ou iFood" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="app.adicionarRegistro()" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check"></i> Salvar Ganhos do App
+                </button>
+            </div>
+
+        </div>
+
+        <!-- History of Entries -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-indigo-600"></i> Histórico de Ganhos nos Aplicativos
+                </h3>
+                <span id="badge-total-registros" class="text-xs bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-full">0 registros</span>
+            </div>
+            
+            <div id="lista-historico" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                <!-- Preenchido via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Instruções iPhone -->
+    <div id="modal-instrucoes" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 border border-slate-100">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-brands fa-apple text-xl text-indigo-600"></i> Como baixar no iPhone (PWA)
+                </h3>
+                <button onclick="app.fecharModalInstrucoes()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <ol class="space-y-3 text-xs text-slate-600 list-decimal list-inside leading-relaxed mb-5">
+                <li>Abra este site utilizando o navegador <b>Safari</b> no seu iPhone.</li>
+                <li>Toque no botão de <b>Compartilhar</b> (o ícone de quadrado com a seta para cima na barra inferior do Safari).</li>
+                <li>Role o menu de opções para baixo e selecione <b>"Adicionar à Tela de Início"</b>.</li>
+                <li>Confirme tocando em <b>"Adicionar"</b> no canto superior direito.</li>
+                <li>Pronto! O aplicativo aparecerá na sua tela inicial como um app nativo.</li>
+            </ol>
+            <button onclick="app.fecharModalInstrucoes()" class="w-full py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-semibold shadow-sm">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        class Gestao12x36System {
+            constructor() {
+                this.state = {
+                    registros: []
+                };
+                this.init();
+            }
+
+            init() {
+                // Definir data de hoje no input
+                const hoje = new Date().toISOString().split('T')[0];
+                document.getElementById('input-data').value = hoje;
+
+                // Carregar dados salvos
+                this.carregarLocalStorage();
+
+                // Se for a primeira vez e não houver registros, adicionar os R$ 40 de ontem automaticamente como solicitado
+                if (this.state.registros.length === 0) {
+                    const ontem = new Date();
+                    ontem.setDate(ontem.getDate() - 1);
+                    const ontemStr = ontem.toISOString().split('T')[0];
+                    this.state.registros.push({
+                        id: Date.now().toString(),
+                        data: ontemStr,
+                        valor: 40.00,
+                        obs: 'Ganhos no aplicativo'
+                    });
+                    this.salvarLocalStorage();
+                }
+
+                this.render();
+                this.registrarServiceWorker();
+            }
+
+            registrarServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('sw.js')
+                        .then(() => console.log('Service Worker registrado com sucesso.'))
+                        .catch(err => console.log('Erro ao registrar Service Worker:', err));
+                }
+            }
+
+            salvarLocalStorage() {
+                try {
+                    localStorage.setItem('gestao_12x36_state', JSON.stringify(this.state));
+                } catch (e) {
+                    console.error('Erro ao salvar:', e);
+                }
+            }
+
+            carregarLocalStorage() {
+                try {
+                    const saved = localStorage.getItem('gestao_12x36_state');
+                    if (saved) {
+                        this.state = JSON.parse(saved);
+                    }
+                } catch (e) {
+                    console.error('Erro ao carregar:', e);
+                }
+            }
+
+            abrirModalInstrucoes() {
+                document.getElementById('modal-instrucoes').classList.remove('hidden');
+            }
+
+            fecharModalInstrucoes() {
+                document.getElementById('modal-instrucoes').classList.add('hidden');
+            }
+
+            adicionarRegistro() {
+                const dataInput = document.getElementById('input-data').value;
+                const valorInput = parseFloat(document.getElementById('input-valor').value);
+                const obsInput = document.getElementById('input-obs').value.trim();
+
+                if (!dataInput) {
+                    this.mostrarToast('Selecione a data do ganho.', 'error');
+                    return;
+                }
+                if (isNaN(valorInput) || valorInput <= 0) {
+                    this.mostrarToast('Insira um valor válido em reais.', 'error');
+                    return;
+                }
+
+                this.state.registros.unshift({
+                    id: Date.now().toString(),
+                    data: dataInput,
+                    valor: valorInput,
+                    obs: obsInput || 'Ganhos no aplicativo'
+                });
+
+                document.getElementById('input-valor').value = '';
+                document.getElementById('input-obs').value = '';
+
+                this.salvarLocalStorage();
+                this.render();
+                this.mostrarToast('Ganhos no aplicativo salvos com sucesso!', 'success');
+            }
+
+            removerRegistro(id) {
+                if (confirm('Deseja realmente excluir este registro?')) {
+                    this.state.registros = this.state.registros.filter(r => r.id !== id);
+                    this.salvarLocalStorage();
+                    this.render();
+                    this.mostrarToast('Registro removido.', 'info');
+                }
+            }
+
+            mostrarToast(mensagem, tipo = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                let bgColors = 'bg-emerald-600 text-white';
+                let icon = 'fa-circle-check';
+                if (tipo === 'error') {
+                    bgColors = 'bg-rose-600 text-white';
+                    icon = 'fa-triangle-exclamation';
+                } else if (tipo === 'info') {
+                    bgColors = 'bg-indigo-600 text-white';
+                    icon = 'fa-circle-info';
+                }
+
+                toast.className = `${bgColors} px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 text-xs font-medium transition transform translate-y-2 opacity-0 pointer-events-auto`;
+                toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i><span>${mensagem}</span>`;
+                container.appendChild(toast);
+
+                setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+                setTimeout(() => {
+                    toast.classList.add('translate-y-2', 'opacity-0');
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
+
+            render() {
+                // Filtrar registros do mês atual
+                const hoje = new Date();
+                const mesAtual = hoje.getMonth();
+                const anoAtual = hoje.getFullYear();
+
+                const registrosMes = this.state.registros.filter(r => {
+                    const dataReg = new Date(r.data + 'T00:00:00');
+                    return dataReg.getMonth() === mesAtual && dataReg.getFullYear() === anoAtual;
+                });
+
+                const totalGanho = registrosMes.reduce((acc, curr) => acc + curr.valor, 0);
+                const metaMeta = 1800.00;
+                const faltaMeta = Math.max(0, metaMeta - totalGanho);
+                const percentual = Math.min(100, (totalGanho / metaMeta) * 100);
+
+                // Atualizar DOM
+                document.getElementById('stat-total-ganho').textContent = `R$ ${totalGanho.toFixed(2).replace('.', ',')}`;
+                document.getElementById('stat-falta-meta').textContent = `R$ ${faltaMeta.toFixed(2).replace('.', ',')}`;
+                document.getElementById('barra-progresso').style.width = `${percentual}%`;
+                document.getElementById('label-percentual').textContent = `${percentual.toFixed(1)}% atingido da meta`;
+                document.getElementById('stat-dias-trabalhados').textContent = `${registrosMes.length} dias com lançamentos`;
+                document.getElementById('badge-total-registros').textContent = `${this.state.registros.length} registros`;
+
+                // Nome do mês atual
+                const nomeMes = hoje.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                document.getElementById('label-mes-atual').textContent = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
+
+                // Renderizar histórico
+                const containerHistorico = document.getElementById('lista-historico');
+                if (this.state.registros.length === 0) {
+                    containerHistorico.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Nenhum ganho registrado ainda. Adicione o seu faturamento do app acima.</p>`;
+                } else {
+                    containerHistorico.innerHTML = this.state.registros.map(r => {
+                        const dataFormatada = new Date(r.data + 'T00:00:00').toLocaleDateString('pt-BR');
+                        return `
+                            <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-wallet"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-slate-800">R$ ${r.valor.toFixed(2).replace('.', ',')} <span class="text-slate-400 font-normal">(${r.obs})</span></div>
+                                        <div class="text-[10px] text-slate-500"><i class="fa-regular fa-calendar mr-1"></i>${dataFormatada}</div>
+                                    </div>
+                                </div>
+                                <button onclick="app.removerRegistro('${r.id}')" class="text-slate-400 hover:text-rose-600 p-1.5 transition" title="Excluir">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        }
+
+        const app = new Gestao12x36System();
+    </script>
+</body>
+</html>
